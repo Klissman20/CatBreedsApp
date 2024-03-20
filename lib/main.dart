@@ -1,3 +1,4 @@
+import 'package:cat_breeds_app/config/theme/app_theme.dart';
 import 'package:cat_breeds_app/presentation/screens/splash_screen_native.dart';
 import 'package:flutter/material.dart';
 
@@ -10,9 +11,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreenNative(),
+      theme: AppTheme().getTheme(),
+      home: const SplashScreenNative(),
     );
   }
 }

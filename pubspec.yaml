@@ -1,19 +1,20 @@
 name: cat_breeds_app
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=3.2.1 <4.0.0'
+  sdk: ">=3.2.1 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
+  flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
 
 flutter:
   uses-material-design: true
@@ -21,8 +22,8 @@ flutter:
     - assets/splash_logo/splash_logo.png
 
   fonts:
-      - family: Roboto
-        fonts:
-          - asset: assets/fonts/Roboto-Regular.ttf
-          - asset: assets/fonts/Roboto-Bold.ttf
-            weight: 800
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Bold.ttf
+          weight: 800
