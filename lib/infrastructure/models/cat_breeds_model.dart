@@ -7,7 +7,7 @@ class CatBreedsModel {
   final String lifeSpan;
   final int adaptability;
   final int intelligence;
-  final String referenceImageId;
+  final String? referenceImageId;
 
   CatBreedsModel({
     required this.id,
@@ -18,7 +18,7 @@ class CatBreedsModel {
     required this.lifeSpan,
     required this.adaptability,
     required this.intelligence,
-    required this.referenceImageId,
+    this.referenceImageId,
   });
 
   factory CatBreedsModel.fromJson(Map<String, dynamic> json) {

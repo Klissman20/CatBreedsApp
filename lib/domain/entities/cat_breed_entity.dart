@@ -2,7 +2,7 @@ class CatBreedsEntity {
   final String id;
   final String name;
   final String description;
-  final String referenceImageId;
+  final String? referenceImageId;
   final String origin;
   final String temperament;
   final int intelligence;
@@ -18,5 +18,5 @@ class CatBreedsEntity {
       required this.lifeSpan,
       required this.name,
       required this.description,
-      required this.referenceImageId});
+      this.referenceImageId});
 }

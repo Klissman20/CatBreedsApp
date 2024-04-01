@@ -1,5 +1,4 @@
 class ApiResponse {
-  final Weight weight;
   final String id;
   final String name;
   final String? cfaUrl;
@@ -40,7 +39,6 @@ class ApiResponse {
   final int? bidability;
 
   ApiResponse({
-    required this.weight,
     required this.id,
     required this.name,
     this.cfaUrl,
@@ -82,7 +80,6 @@ class ApiResponse {
   });
 
   factory ApiResponse.fromJson(Map<String, dynamic> json) => ApiResponse(
-        weight: Weight.fromJson(json["weight"]),
         id: json["id"],
         name: json["name"],
         cfaUrl: json["cfa_url"] ?? 'No url found',
@@ -118,13 +115,12 @@ class ApiResponse {
         shortLegs: json["short_legs"],
         wikipediaUrl: json["wikipedia_url"] ?? 'No url found',
         hypoallergenic: json["hypoallergenic"],
-        referenceImageId: json["reference_image_id"] ?? 'No url found',
+        referenceImageId: json["reference_image_id"],
         catFriendly: json["cat_friendly"] ?? 0,
         bidability: json["bidability"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
-        "weight": weight.toJson(),
         "id": id,
         "name": name,
         "cfa_url": cfaUrl,
@@ -163,25 +159,5 @@ class ApiResponse {
         "reference_image_id": referenceImageId,
         "cat_friendly": catFriendly,
         "bidability": bidability,
-      };
-}
-
-class Weight {
-  final String imperial;
-  final String metric;
-
-  Weight({
-    required this.imperial,
-    required this.metric,
-  });
-
-  factory Weight.fromJson(Map<String, dynamic> json) => Weight(
-        imperial: json["imperial"],
-        metric: json["metric"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "imperial": imperial,
-        "metric": metric,
       };
 }
