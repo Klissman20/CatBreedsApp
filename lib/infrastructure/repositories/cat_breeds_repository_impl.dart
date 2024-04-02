@@ -8,7 +8,7 @@ class CatBreedsRepositoryImpl implements CatBreedsRepository {
   CatBreedsRepositoryImpl(this.catBreedsDatasource);
 
   @override
-  Future<List<CatBreedsEntity>> getBreeds() async {
-    return catBreedsDatasource.getBreeds();
+  Future<List<CatBreedsEntity>> getBreeds({int page = 1}) async {
+    return catBreedsDatasource.getBreeds(page: page);
   }
 }

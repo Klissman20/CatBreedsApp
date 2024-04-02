@@ -9,10 +9,10 @@ class CatBreedCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Card(
-        elevation: 5.0,
-        margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+        elevation: 10.0,
+        margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            borderRadius: BorderRadius.all(Radius.circular(7.0))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -21,32 +21,33 @@ class CatBreedCard extends StatelessWidget {
               child: Text(
                 catBreed.name,
                 style: const TextStyle(
-                    fontSize: 20.0, fontWeight: FontWeight.w800),
+                    fontSize: 22.0, fontWeight: FontWeight.w800),
               ),
             ),
-            ClipRRect(
-              borderRadius: BorderRadius.zero,
-              child: Image.network(
-                catBreed.referenceImageId != null
-                    ? 'https://cdn2.thecatapi.com/images/${catBreed.referenceImageId}.jpg'
-                    : 'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png',
-                loadingBuilder: (BuildContext context, Widget child,
-                    ImageChunkEvent? loading) {
-                  if (loading == null) {
-                    return child;
-                  }
-                  return const CircularProgressIndicator(
-                    color: Colors.black,
-                  );
-                },
-                width: size.width,
-                height: 300,
-                scale: 0.7,
-                fit: BoxFit.cover,
-              ),
-            ),
+            catBreed.referenceImageId != null
+                ? Image.network(
+                    'https://cdn2.thecatapi.com/images/${catBreed.referenceImageId}.jpg',
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loading) {
+                      if (loading == null) {
+                        return child;
+                      }
+                      return const CircularProgressIndicator(
+                        strokeWidth: 2.0,
+                        color: Colors.black,
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset('assets/image_not_available.png');
+                    },
+                    width: size.width,
+                    height: 300,
+                    scale: 0.7,
+                    fit: BoxFit.contain,
+                  )
+                : Image.asset('assets/image_not_available.png'),
             Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(15.0),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [

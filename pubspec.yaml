@@ -10,7 +10,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.1.0
+  flutter_riverpod: ^2.5.1
   http: ^1.2.1
+  riverpod: ^2.5.1
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -20,7 +22,9 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - .env
     - assets/splash_logo/splash_logo.png
+    - assets/image_not_available.png
 
   fonts:
     - family: Roboto
