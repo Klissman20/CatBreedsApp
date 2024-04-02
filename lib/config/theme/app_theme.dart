@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  static const Color colorApp = Color.fromARGB(255, 247, 211, 119);
+  static const Color colorApp = Color.fromARGB(255, 119, 158, 247);
 
   static Color colorAppAlpha = const Color.fromARGB(255, 0, 98, 128);
 

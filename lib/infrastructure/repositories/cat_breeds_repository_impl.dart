@@ -11,4 +11,9 @@ class CatBreedsRepositoryImpl implements CatBreedsRepository {
   Future<List<CatBreedsEntity>> getBreeds({int page = 1}) async {
     return catBreedsDatasource.getBreeds(page: page);
   }
+
+  @override
+  Future<List<CatBreedsEntity>> searchBreeds({String query = ''}) {
+    return catBreedsDatasource.searchBreeds(query: query);
+  }
 }

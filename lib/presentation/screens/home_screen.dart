@@ -1,4 +1,6 @@
+import 'package:cat_breeds_app/presentation/delegates/breeds_search_delegate.dart';
 import 'package:cat_breeds_app/presentation/providers/catbreeds_provider.dart';
+import 'package:cat_breeds_app/presentation/providers/catbreeds_repository_provider.dart';
 import 'package:cat_breeds_app/presentation/providers/initial_loading_provider.dart';
 import 'package:cat_breeds_app/presentation/widgets/cat_breeds/cat_breed_card.dart';
 import 'package:cat_breeds_app/presentation/widgets/shared/full_screen_loader.dart';
@@ -39,7 +41,17 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cat Breeds'),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                final searchBreeds =
+                    ref.read(catBreedsRepositoryProvider).searchBreeds;
+                showSearch(
+                    context: context,
+                    delegate: ShowSearchDelegate(searchBreeds: searchBreeds));
+              },
+              icon: const Icon(Icons.search))
+        ],
       ),
       body: ListView.builder(
         itemCount: catBreedsList.length,

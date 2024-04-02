@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class FullScreenLoader extends StatelessWidget {
   const FullScreenLoader({super.key});
@@ -20,7 +21,10 @@ class FullScreenLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        const Text('Please be patient'),
+        const Text(
+          'Please be patient',
+          style: TextStyle(fontSize: 20),
+        ),
         const SizedBox(
           height: 10,
         ),
@@ -33,7 +37,9 @@ class FullScreenLoader extends StatelessWidget {
         StreamBuilder(
             stream: getLoadingMessages(),
             builder: (context, snapshot) {
-              if (!snapshot.hasData) return const Text('Loading...');
+              if (!snapshot.hasData) {
+                return const Text('Loading...', style: TextStyle(fontSize: 20));
+              }
               return Text(snapshot.data!);
             })
       ]),
