@@ -1,3 +1,4 @@
+import 'package:cat_breeds_app/domain/entities/cat_breed_entity.dart';
 import 'package:cat_breeds_app/presentation/delegates/breeds_search_delegate.dart';
 import 'package:cat_breeds_app/presentation/providers/catbreeds_provider.dart';
 import 'package:cat_breeds_app/presentation/providers/catbreeds_repository_provider.dart';
@@ -6,6 +7,7 @@ import 'package:cat_breeds_app/presentation/widgets/cat_breeds/cat_breed_card.da
 import 'package:cat_breeds_app/presentation/widgets/shared/full_screen_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String name = 'home_screen';
@@ -47,9 +49,14 @@ class _HomeViewState extends ConsumerState<_HomeView> {
               onPressed: () {
                 final searchBreeds =
                     ref.read(catBreedsRepositoryProvider).searchBreeds;
-                showSearch(
-                    context: context,
-                    delegate: BreedsSearchDelegate(searchBreeds: searchBreeds));
+                showSearch<CatBreedsEntity?>(
+                        context: context,
+                        delegate:
+                            BreedsSearchDelegate(searchBreeds: searchBreeds))
+                    .then((breed) {
+                  if (breed == null) return;
+                  context.push('/home/breed/${breed.id}');
+                });
               },
               icon: const Icon(Icons.search))
         ],

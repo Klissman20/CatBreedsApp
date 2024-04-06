@@ -2,7 +2,6 @@ import 'package:cat_breeds_app/domain/entities/cat_breed_entity.dart';
 import 'package:cat_breeds_app/presentation/providers/providers.dart';
 import 'package:cat_breeds_app/presentation/widgets/shared/custom_detail_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BreedScreen extends ConsumerStatefulWidget {
