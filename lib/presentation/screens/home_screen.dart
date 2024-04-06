@@ -1,8 +1,8 @@
 import 'package:cat_breeds_app/domain/entities/cat_breed_entity.dart';
 import 'package:cat_breeds_app/presentation/delegates/breeds_search_delegate.dart';
 import 'package:cat_breeds_app/presentation/providers/catbreeds_provider.dart';
-import 'package:cat_breeds_app/presentation/providers/catbreeds_repository_provider.dart';
 import 'package:cat_breeds_app/presentation/providers/initial_loading_provider.dart';
+import 'package:cat_breeds_app/presentation/providers/search_breeds_provider.dart';
 import 'package:cat_breeds_app/presentation/widgets/cat_breeds/cat_breed_card.dart';
 import 'package:cat_breeds_app/presentation/widgets/shared/full_screen_loader.dart';
 import 'package:flutter/material.dart';
@@ -47,12 +47,16 @@ class _HomeViewState extends ConsumerState<_HomeView> {
         actions: [
           IconButton(
               onPressed: () {
-                final searchBreeds =
-                    ref.read(catBreedsRepositoryProvider).searchBreeds;
+                final searchedBreeds = ref.read(searchedMoviesProvider);
+                final searchQuery = ref.read(searchQueryProvider);
                 showSearch<CatBreedsEntity?>(
+                        query: searchQuery,
                         context: context,
-                        delegate:
-                            BreedsSearchDelegate(searchBreeds: searchBreeds))
+                        delegate: BreedsSearchDelegate(
+                            initialBreeds: searchedBreeds,
+                            searchBreeds: ref
+                                .read(searchedMoviesProvider.notifier)
+                                .searchBreedsByQuery))
                     .then((breed) {
                   if (breed == null) return;
                   context.push('/home/breed/${breed.id}');

@@ -4,24 +4,22 @@ import 'package:cat_breeds_app/domain/entities/cat_breed_entity.dart';
 import 'package:flutter/material.dart';
 
 typedef SearchBreedsCallback = Future<List<CatBreedsEntity>> Function(
-    {String query});
+    String query);
 
 class BreedsSearchDelegate extends SearchDelegate<CatBreedsEntity?> {
+  final List<CatBreedsEntity> initialBreeds;
   final SearchBreedsCallback searchBreeds;
   StreamController<List<CatBreedsEntity>> debouncedBreeds =
       StreamController.broadcast();
   Timer? _debounceTimer;
 
-  BreedsSearchDelegate({required this.searchBreeds});
+  BreedsSearchDelegate(
+      {required this.initialBreeds, required this.searchBreeds});
 
   void _onQueryChanged(String query) {
     if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
     _debounceTimer = Timer(const Duration(milliseconds: 700), () async {
-      if (query.isEmpty) {
-        debouncedBreeds.add([]);
-        return;
-      }
-      final breeds = await searchBreeds(query: query);
+      final breeds = await searchBreeds(query);
       debouncedBreeds.add(breeds);
     });
   }
@@ -63,6 +61,7 @@ class BreedsSearchDelegate extends SearchDelegate<CatBreedsEntity?> {
   Widget buildSuggestions(BuildContext context) {
     _onQueryChanged(query);
     return StreamBuilder(
+        initialData: initialBreeds,
         stream: debouncedBreeds.stream,
         builder: (context, snapshot) {
           final breeds = snapshot.data ?? [];

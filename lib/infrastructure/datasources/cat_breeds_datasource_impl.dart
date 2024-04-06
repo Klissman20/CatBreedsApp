@@ -15,7 +15,8 @@ class CatBreedsDatasourceImpl implements CatBreedsDatasource {
   }
 
   @override
-  Future<List<CatBreedsEntity>> searchBreeds({String query = ''}) async {
+  Future<List<CatBreedsEntity>> searchBreeds(String query) async {
+    if (query.isEmpty) return [];
     final Uri url = Uri.https('api.thecatapi.com', '/v1/breeds/search',
         {'q': query, 'x_api_key': Environment.apiKey});
     return _getDataFromApi(url);

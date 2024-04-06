@@ -13,8 +13,8 @@ class CatBreedsRepositoryImpl implements CatBreedsRepository {
   }
 
   @override
-  Future<List<CatBreedsEntity>> searchBreeds({String query = ''}) {
-    return catBreedsDatasource.searchBreeds(query: query);
+  Future<List<CatBreedsEntity>> searchBreeds(String query) {
+    return catBreedsDatasource.searchBreeds(query);
   }
 
   @override
