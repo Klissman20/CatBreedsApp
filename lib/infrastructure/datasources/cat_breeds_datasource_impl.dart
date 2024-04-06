@@ -21,6 +21,22 @@ class CatBreedsDatasourceImpl implements CatBreedsDatasource {
     return _getDataFromApi(url);
   }
 
+  @override
+  Future<CatBreedsEntity> getBreedById({required String breedId}) async {
+    final Uri url = Uri.https('api.thecatapi.com', '/v1/breeds/$breedId',
+        {'x_api_key': Environment.apiKey});
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final dataToModel = CatBreedsModel.fromJson(data);
+      final CatBreedsEntity catBreed =
+          CatBreedsMapper.catBreedsToEntity(dataToModel);
+      return catBreed;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
   Future<List<CatBreedsEntity>> _getDataFromApi(Uri url) async {
     final response = await http.get(url);
     if (response.statusCode == 200) {

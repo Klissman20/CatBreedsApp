@@ -1,13 +1,34 @@
+import 'dart:async';
+
 import 'package:cat_breeds_app/domain/entities/cat_breed_entity.dart';
 import 'package:flutter/material.dart';
 
 typedef SearchBreedsCallback = Future<List<CatBreedsEntity>> Function(
     {String query});
 
-class ShowSearchDelegate extends SearchDelegate {
+class BreedsSearchDelegate extends SearchDelegate {
   final SearchBreedsCallback searchBreeds;
+  StreamController<List<CatBreedsEntity>> debouncedBreeds =
+      StreamController.broadcast();
+  Timer? _debounceTimer;
 
-  ShowSearchDelegate({required this.searchBreeds});
+  BreedsSearchDelegate({required this.searchBreeds});
+
+  void _onQueryChanged(String query) {
+    if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 700), () async {
+      if (query.isEmpty) {
+        debouncedBreeds.add([]);
+        return;
+      }
+      final breeds = await searchBreeds(query: query);
+      debouncedBreeds.add(breeds);
+    });
+  }
+
+  void _clearStream() {
+    debouncedBreeds.close();
+  }
 
   @override
   String get searchFieldLabel => 'Type a breed';
@@ -27,6 +48,7 @@ class ShowSearchDelegate extends SearchDelegate {
   Widget? buildLeading(BuildContext context) {
     return IconButton(
         onPressed: () {
+          _clearStream();
           close(context, null);
         },
         icon: const Icon(Icons.arrow_back)); // Icon(Icons.search)
@@ -39,20 +61,14 @@ class ShowSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return FutureBuilder(
-        future: searchBreeds(query: query),
+    _onQueryChanged(query);
+    return StreamBuilder(
+        stream: debouncedBreeds.stream,
         builder: (context, snapshot) {
           final breeds = snapshot.data ?? [];
           return ListView.builder(
               itemBuilder: (context, index) {
                 return _BreedItem(breed: breeds[index]);
-
-                // return ListTile(
-                //   title: Text(breeds[index].name),
-                //   onTap: () {
-                //     close(context, breeds[index]);
-                //   },
-                // );
               },
               itemCount: breeds.length);
         });

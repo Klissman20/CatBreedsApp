@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeScreen extends StatelessWidget {
+  static const String name = 'home_screen';
   const HomeScreen({super.key});
 
   @override
@@ -48,7 +49,7 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                     ref.read(catBreedsRepositoryProvider).searchBreeds;
                 showSearch(
                     context: context,
-                    delegate: ShowSearchDelegate(searchBreeds: searchBreeds));
+                    delegate: BreedsSearchDelegate(searchBreeds: searchBreeds));
               },
               icon: const Icon(Icons.search))
         ],

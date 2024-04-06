@@ -1,5 +1,5 @@
+import 'package:cat_breeds_app/config/router/app_router.dart';
 import 'package:cat_breeds_app/config/theme/app_theme.dart';
-import 'package:cat_breeds_app/presentation/screens/splash_screen_native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,10 +14,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: AppTheme().getTheme(),
-      home: const SplashScreenNative(),
+      routerConfig: appRouter,
     );
   }
 }

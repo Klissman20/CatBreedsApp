@@ -1,8 +1,9 @@
 import 'package:cat_breeds_app/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SplashScreenNative extends StatefulWidget {
-  static const String name = 'splash_screen_native';
+  static const String name = 'splash_screen';
 
   const SplashScreenNative({super.key});
 
@@ -15,8 +16,7 @@ class _SplashState extends State<SplashScreenNative> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+      context.pushReplacementNamed(HomeScreen.name);
     });
   }
 
