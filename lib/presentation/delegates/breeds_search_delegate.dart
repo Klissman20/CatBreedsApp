@@ -7,7 +7,7 @@ typedef SearchBreedsCallback = Future<List<CatBreedsEntity>> Function(
     String query);
 
 class BreedsSearchDelegate extends SearchDelegate<CatBreedsEntity?> {
-  final List<CatBreedsEntity> initialBreeds;
+  List<CatBreedsEntity> initialBreeds;
   final SearchBreedsCallback searchBreeds;
   StreamController<List<CatBreedsEntity>> debouncedBreeds =
       StreamController.broadcast();
@@ -20,6 +20,7 @@ class BreedsSearchDelegate extends SearchDelegate<CatBreedsEntity?> {
     if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
     _debounceTimer = Timer(const Duration(milliseconds: 700), () async {
       final breeds = await searchBreeds(query);
+      initialBreeds = breeds;
       debouncedBreeds.add(breeds);
     });
   }
@@ -52,14 +53,7 @@ class BreedsSearchDelegate extends SearchDelegate<CatBreedsEntity?> {
         icon: const Icon(Icons.arrow_back)); // Icon(Icons.search)
   }
 
-  @override
-  Widget buildResults(BuildContext context) {
-    return const SizedBox();
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    _onQueryChanged(query);
+  Widget _buildResultsAndSuggestions() {
     return StreamBuilder(
         initialData: initialBreeds,
         stream: debouncedBreeds.stream,
@@ -74,6 +68,17 @@ class BreedsSearchDelegate extends SearchDelegate<CatBreedsEntity?> {
               },
               itemCount: breeds.length);
         });
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return _buildResultsAndSuggestions();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    _onQueryChanged(query);
+    return _buildResultsAndSuggestions();
   }
 }
 
