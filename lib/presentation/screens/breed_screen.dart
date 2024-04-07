@@ -57,7 +57,7 @@ class BreedScreenState extends ConsumerState<BreedScreen> {
           children: [
             SizedBox(
               width: size.width,
-              height: size.height * 0.4,
+              height: size.height * 0.35,
               child: Image.network(
                 'https://cdn2.thecatapi.com/images/${breed.referenceImageId}.jpg',
                 fit: BoxFit.contain,

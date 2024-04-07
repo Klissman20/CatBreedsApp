@@ -35,16 +35,21 @@ class CatBreedCard extends StatelessWidget {
                         if (loading == null) {
                           return child;
                         }
-                        return const CircularProgressIndicator(
-                          strokeWidth: 2.0,
-                          color: Colors.black,
+                        return const SizedBox(
+                          height: 250,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.0,
+                              color: Colors.black,
+                            ),
+                          ),
                         );
                       },
                       errorBuilder: (context, error, stackTrace) {
                         return Image.asset('assets/image_not_available.png');
                       },
                       width: size.width,
-                      height: 300,
+                      height: 250,
                       scale: 0.7,
                       fit: BoxFit.contain,
                     )

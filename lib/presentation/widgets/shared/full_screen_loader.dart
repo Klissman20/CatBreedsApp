@@ -8,9 +8,9 @@ class FullScreenLoader extends StatelessWidget {
     final messages = <String>[
       'Loading Breeds',
       'Wait a second',
-      'converting data',
-      'almost there',
-      'loading.....'
+      'Converting data',
+      'Almost there',
+      'Loading.....'
     ];
     return Stream.periodic(const Duration(milliseconds: 1200), (step) {
       return messages[step];
@@ -40,7 +40,7 @@ class FullScreenLoader extends StatelessWidget {
               if (!snapshot.hasData) {
                 return const Text('Loading...', style: TextStyle(fontSize: 20));
               }
-              return Text(snapshot.data!);
+              return Text(snapshot.data!, style: const TextStyle(fontSize: 20));
             })
       ]),
     );
