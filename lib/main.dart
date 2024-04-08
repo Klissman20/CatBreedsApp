@@ -1,12 +1,13 @@
 import 'package:cat_breeds_app/config/router/app_router.dart';
 import 'package:cat_breeds_app/config/theme/app_theme.dart';
+import 'package:cat_breeds_app/presentation/bloc/cat_breeds/cat_breeds_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
   await dotenv.load(fileName: '.env');
-  runApp(const ProviderScope(child: MainApp()));
+  runApp(const MainApp());
 }
 
 class MainApp extends StatelessWidget {
@@ -14,10 +15,17 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme().getTheme(),
-      routerConfig: appRouter,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => CatBreedsBloc(),
+        ),
+      ],
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme().getTheme(),
+        routerConfig: appRouter,
+      ),
     );
   }
 }

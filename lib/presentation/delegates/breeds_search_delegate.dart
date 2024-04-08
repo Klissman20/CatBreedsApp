@@ -1,32 +1,25 @@
 import 'dart:async';
 
 import 'package:cat_breeds_app/domain/entities/cat_breed_entity.dart';
+import 'package:cat_breeds_app/presentation/bloc/cat_breeds/cat_breeds_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-typedef SearchBreedsCallback = Future<List<CatBreedsEntity>> Function(
-    String query);
+typedef SearchBreedsCallback = void Function(String query);
 
 class BreedsSearchDelegate extends SearchDelegate<CatBreedsEntity?> {
   List<CatBreedsEntity> initialBreeds;
-  final SearchBreedsCallback searchBreeds;
-  StreamController<List<CatBreedsEntity>> debouncedBreeds =
-      StreamController.broadcast();
   Timer? _debounceTimer;
 
-  BreedsSearchDelegate(
-      {required this.initialBreeds, required this.searchBreeds});
+  BreedsSearchDelegate({required this.initialBreeds});
 
-  void _onQueryChanged(String query) {
+  void _onQueryChanged(BuildContext context, String query) {
     if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
-    _debounceTimer = Timer(const Duration(milliseconds: 700), () async {
-      final breeds = await searchBreeds(query);
+    _debounceTimer = Timer(const Duration(milliseconds: 700), () {
+      context.read<CatBreedsBloc>().add(SearchCatBreedsEvent(query));
+      final breeds = context.read<CatBreedsBloc>().state.searchBreedsList;
       initialBreeds = breeds;
-      debouncedBreeds.add(breeds);
     });
-  }
-
-  void _clearStream() {
-    debouncedBreeds.close();
   }
 
   @override
@@ -38,6 +31,7 @@ class BreedsSearchDelegate extends SearchDelegate<CatBreedsEntity?> {
       IconButton(
           onPressed: () {
             query = '';
+            context.read<CatBreedsBloc>().add(SetSearchQueryEvent(query));
           },
           icon: const Icon(Icons.clear))
     ];
@@ -47,27 +41,23 @@ class BreedsSearchDelegate extends SearchDelegate<CatBreedsEntity?> {
   Widget? buildLeading(BuildContext context) {
     return IconButton(
         onPressed: () {
-          _clearStream();
           close(context, null);
         },
         icon: const Icon(Icons.arrow_back)); // Icon(Icons.search)
   }
 
   Widget _buildResultsAndSuggestions() {
-    return StreamBuilder(
-        initialData: initialBreeds,
-        stream: debouncedBreeds.stream,
-        builder: (context, snapshot) {
-          final breeds = snapshot.data ?? [];
-          return ListView.builder(
-              itemBuilder: (context, index) {
-                return _BreedItem(
-                  breed: breeds[index],
-                  onMovieSelected: close,
-                );
-              },
-              itemCount: breeds.length);
-        });
+    return BlocBuilder<CatBreedsBloc, CatBreedsState>(builder: (_, state) {
+      final breeds = state.searchBreedsList;
+      return ListView.builder(
+          itemBuilder: (context, index) {
+            return _BreedItem(
+              breed: breeds[index],
+              onMovieSelected: close,
+            );
+          },
+          itemCount: breeds.length);
+    });
   }
 
   @override
@@ -77,7 +67,8 @@ class BreedsSearchDelegate extends SearchDelegate<CatBreedsEntity?> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    _onQueryChanged(query);
+    _onQueryChanged(context, query);
+    context.read<CatBreedsBloc>().add(SetSearchQueryEvent(query));
     return _buildResultsAndSuggestions();
   }
 }
