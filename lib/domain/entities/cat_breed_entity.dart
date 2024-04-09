@@ -1,3 +1,5 @@
+import 'package:cat_breeds_app/infrastructure/shared/exception/not_data_exception.dart';
+
 class CatBreedsEntity {
   final String id;
   final String name;
@@ -22,7 +24,7 @@ class CatBreedsEntity {
   final int hairless;
   final int natural;
 
-  const CatBreedsEntity(
+  CatBreedsEntity(
       {required this.id,
       required this.origin,
       required this.temperament,
@@ -44,5 +46,13 @@ class CatBreedsEntity {
       required this.experimental,
       required this.hairless,
       required this.natural,
-      this.referenceImageId});
+      this.referenceImageId}) {
+    validateName(name);
+  }
+
+  void validateName(String name) {
+    if (name.isEmpty || name == 'null') {
+      throw NotDataFoundException();
+    }
+  }
 }

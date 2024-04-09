@@ -1,7 +1,7 @@
 part of 'cat_breeds_bloc.dart';
 
 @immutable
-class CatBreedsState {
+class CatBreedsState extends Equatable {
   final List<CatBreedsEntity> catBreedsList;
   final bool isLoading;
   final String searchQuery;
@@ -26,6 +26,15 @@ class CatBreedsState {
           searchQuery: searchQuery ?? this.searchQuery,
           isLoading: isLoading ?? this.isLoading,
           selectedCatBreed: selectedCatBreed ?? this.selectedCatBreed);
+
+  @override
+  List<Object?> get props => [
+        catBreedsList,
+        isLoading,
+        selectedCatBreed,
+        searchQuery,
+        searchBreedsList
+      ];
 }
 
 final class CatBreedsInitialState extends CatBreedsState {

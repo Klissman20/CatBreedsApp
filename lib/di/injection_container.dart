@@ -1,8 +1,6 @@
 import 'package:cat_breeds_app/domain/datasources/cat_breeds_datasource.dart';
 import 'package:cat_breeds_app/domain/repositories/cat_breeds_repository.dart';
-import 'package:cat_breeds_app/domain/usecases/get_breed_by_id_use_case.dart';
-import 'package:cat_breeds_app/domain/usecases/get_breeds_use_case.dart';
-import 'package:cat_breeds_app/domain/usecases/search_breeds_use_case.dart';
+import 'package:cat_breeds_app/domain/services/cat_breed_service.dart';
 import 'package:cat_breeds_app/infrastructure/datasources/cat_breeds_datasource_impl.dart';
 import 'package:cat_breeds_app/infrastructure/repositories/cat_breeds_repository_impl.dart';
 import 'package:cat_breeds_app/infrastructure/shared/http_client/http_client.dart';
@@ -15,13 +13,11 @@ Future<void> init() async {
   //! Features
   // Bloc
   getIt.registerFactory(
-    () => CatBreedsBloc(getIt(), getIt(), getIt()),
+    () => CatBreedsBloc(getIt()),
   );
 
-  // Use cases
-  getIt.registerLazySingleton(() => GetBreedsUseCase(getIt()));
-  getIt.registerLazySingleton(() => SearchBreedsUseCase(getIt()));
-  getIt.registerLazySingleton(() => GetBreedByIdUseCase(getIt()));
+  // Service
+  getIt.registerLazySingleton(() => CatBreedService(getIt()));
 
   getIt.registerLazySingleton<CatBreedsRepository>(
     () => CatBreedsRepositoryImpl(getIt()),
